@@ -5,18 +5,20 @@
   "main": "index.js",
   "scripts": {
     "build": "webpack --mode production",
-    "dev": "webpack serve"
+    "dev": "webpack serve",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/KkeyZ1788/mesto.git"
+    "url": "git+https://github.com/KkeyZ1788/mesto-project.git"
   },
   "author": "KatyaZ",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/KkeyZ1788/mesto/issues"
+    "url": "https://github.com/KkeyZ1788/mesto-project/issues"
   },
-  "homepage": "https://github.com/KkeyZ1788/mesto#readme",
+  "homepage": "https://github.com/KkeyZ1788/mesto-project#readme",
   "devDependencies": {
     "@babel/core": "^7.17.0",
     "@babel/preset-env": "^7.16.11",
@@ -33,6 +35,7 @@
     "webpack-dev-server": "^4.7.3"
   },
   "dependencies": {
-    "core-js": "^3.22.7"
+    "core-js": "^3.22.7",
+    "gh-pages": "^4.0.0"
   }
 }
