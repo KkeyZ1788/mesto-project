@@ -6,4 +6,4 @@
 2. JavaScript
 В будующем планируется доработать проект и добавить новую функциональность при помощи JS.
 
-Ссылка на сайт:  https://kkeyz1788.github.io/mesto/
+Ссылка на сайт:  https://kkeyz1788.github.io/mesto-project/
