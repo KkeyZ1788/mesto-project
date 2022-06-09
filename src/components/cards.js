@@ -2,13 +2,12 @@
 
 import { openPopup, closePopup } from './utils.js'
 import { openImagePopup } from './modals'
-
+import { deleteCard, printError, addLike, deleteLike, postCard } from './api';
 
 const postTemlate = document.querySelector('#post-template').content;
 const addCardPopUp = document.querySelector('.popup_add-card') // попап добавления карточки
 const formAddCard = addCardPopUp.querySelector('.add-form'); // переменная формы добавления карточки
-const cardName = formAddCard.querySelector('.popup__form_type_add-name');
-const cardLink = formAddCard.querySelector('.popup__form_type_add-link');
+
 const cardSubmitBtn = formAddCard.querySelector('.add-card');
 const cardContainer = document.querySelector('.elements') // переменная с секцией, куда будут добавляться карточки
 
@@ -16,28 +15,79 @@ const cardContainer = document.querySelector('.elements') // переменна�
 
 const handleCardRemove = (event) => {
   event.target.closest('.elements__item').remove();
+
 };
 
-// лайк карточки
-const handleGardLike = (event) => {
-  event.target.classList.toggle('button_is-active');
+//лайк карточки handleGardLike
+
+function  handleGardLike(likeButton, elementLikeCount, cardId) {
+
+  if (likeButton.classList.contains('button_is-active')) {
+deleteLike(cardId)
+  .then(res => {
+    elementLikeCount.textContent = res.likes.length;
+    likeButton.classList.remove('button_is-active');
+  })
+  .catch(err => console.error(err))
+} else {
+addLike(cardId)
+  .then(res => {
+    elementLikeCount.textContent = res.likes.length;
+    likeButton.classList.add('button_is-active');
+  })
+  .catch(err => console.error(err))
+}
 };
+
 
 // Функция создания карточки
-const createCard = (card) => {
+function createCard(cardData, userId) {
+
+  const { likes, name, link, isLiked, cardId, owner } = cardData;
   const postElement = postTemlate.querySelector('.elements__item').cloneNode(true);
   const imageElement = postElement.querySelector('.elements__img')
-  imageElement.src = card.link;
-  imageElement.alt = card.name;
+  const likeButton = postElement.querySelector('.elements__like-button')
+  const elementLikeCount = postElement.querySelector('.element__like-counter');
+
+  likeButton.addEventListener('click',
+    (evt) => {handleGardLike(likeButton, elementLikeCount, cardData._id) });
+
+
+  imageElement.src = link;
+  imageElement.alt = name;
   imageElement.addEventListener('click', openImagePopup);
-  postElement.querySelector('.elements__item-name').textContent = card.name;
-  postElement.querySelector('.delete').addEventListener('click', handleCardRemove);
-  postElement.querySelector('.elements__like-button').addEventListener('click', handleGardLike);
+  postElement.querySelector('.elements__item-name').textContent = name;
+
+  elementLikeCount.textContent = likes.length;
+
+
+  const deleteButton = postElement.querySelector('.delete')
+  deleteButton.addEventListener('click', function () {
+    deleteCard(cardData._id)
+      .then(() => {
+        const cardItem = deleteButton.closest('.elements__item');
+        cardItem.remove();
+      })
+      .catch(printError)
+  });
+
+  if (cardData.likes.some(item => item._id === userId)) {
+
+    likeButton.classList.add('button_is-active');
+  }
+
+  if (cardData.owner._id !== userId) {
+    deleteButton.remove();
+  }
 
 
   return postElement
 
 };
+
+
+
+
 
 // Открытие формы для добавления карточки
 const openAddForm = function () {
@@ -53,26 +103,7 @@ const closeAddForm = function () {
 
 
 
-// Создание карточки из формы
-const handleAddCardFromForm = function (evt) { //addCardFromHandler
-  evt.preventDefault();
-
-  const newCard = createCard({
-    name: cardName.value,
-    link: cardLink.value,
-  });
-
-  cardContainer.prepend(newCard);
-  closeAddForm();
 
 
-  cardName.value = "";
-  cardLink.value = "";
 
-  cardSubmitBtn.classList.add('popup__button_disabled');
-  cardSubmitBtn.setAttribute('disabled', true);
-
-}
-
-
-export { createCard, openAddForm, closeAddForm, handleAddCardFromForm, formAddCard, addCardPopUp, cardContainer }
+export { createCard, openAddForm, closeAddForm,  formAddCard, addCardPopUp, cardContainer, cardSubmitBtn }

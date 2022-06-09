@@ -13,7 +13,16 @@
             </header>
             <main>
                 <section class="profile">
+                    <div class="profile__avatar-wrapper">
                         <img class="profile__avatar" src="<%=require('./images/profile-img.jpg')%>" alt="изображение профиля">
+
+                        <!-- кнопка смены аватара  profile__avatar-edit--> 
+                        <button class="button profile__avatar-edit"></button>
+                    </div>
+
+
+
+
                         <div class="profile__info">
                             <div class="profile__wrapper">
                                 <h1 class="profile__name">Катя З.</h1>
@@ -64,6 +73,27 @@
                     </form>
                 </div>
             </div> 
+
+
+            <!-- форма редактирования аватара -->
+            <div class="popup popup__edit-avatar">
+                <div class="popup__container">
+                    <form name="Edit-avatar-form" class="popup__content form" novalidate>
+                        <h2 class="popup__title">Обновить аватар</h2>
+        
+                        <div class="form__wrapper">
+                        <input type="url" placeholder='Ссылка на картинку' class="popup__form popup__form_type_avatar-link" id ='avatar-link' required />
+                        <span class="form__input-error avatar-link-error" ></span>
+                    </div>
+                        <button type="submit" class="popup__save-button add-card" >Создать</button>
+                        <button type="button" class="popup__close"></button>
+                    </form>
+                </div>
+            </div> 
+
+
+        
+
             <div class="popup popup_type_image">
                 <div class="popup__content">
                     <button type="button" class="popup__close"></button>
@@ -80,6 +110,7 @@
                 <div class="elements__group">
                     <h2 class="elements__item-name"></h2>
                     <button type="button" class="elements__like-button"></button>
+                    <span class="element__like-counter">0</span> 
                 </div>
             </article>  
         </template>
