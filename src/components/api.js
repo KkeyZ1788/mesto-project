@@ -25,12 +25,9 @@ function chekServerResponse(res) {
 
 //загрузка данных пользователя с сервера
 const getUserData = () => {
-    return fetch(`https://nomoreparties.co/v1/plus-cohort-9/users/me`, {
+    return fetch(`${UserData.urlData}/users/me`, {
         method: 'GET',
-        headers: {
-          authorization: '3e17db6a-6951-46bf-9280-ebc36e39e39a',
-          'Content-Type': 'application/json'
-      }
+        headers: UserData.headers
     })
         .then(chekServerResponse)
 }
@@ -38,12 +35,9 @@ const getUserData = () => {
 // Загрузка карточек с сервера
 
 function getInitialCards() {
-    return fetch('https://nomoreparties.co/v1/plus-cohort-9/cards', {
+    return fetch(`${UserData.urlData}/cards`, {
         method: 'GET',
-        headers: {
-          authorization: '3e17db6a-6951-46bf-9280-ebc36e39e39a',
-          'Content-Type': 'application/json'
-      }
+        headers: UserData.headers
     })
     .then(chekServerResponse)
 }
@@ -51,12 +45,9 @@ function getInitialCards() {
 //Редактирование профиля
 
 const editProfile = (name, description) => {
-    return fetch (`https://nomoreparties.co/v1/plus-cohort-9/users/me `, {
+    return fetch (`${UserData.urlData}/users/me`, {
       method: 'PATCH',
-      headers: {
-        authorization: '3e17db6a-6951-46bf-9280-ebc36e39e39a',
-        'Content-Type': 'application/json'
-    },
+      headers: UserData.headers,
       body: JSON.stringify({
         name: name,
         about: description
@@ -68,12 +59,9 @@ const editProfile = (name, description) => {
 
   //Добавление новой карточки
 const postCard = (cardName, cardLink) => {
-    return fetch(`https://nomoreparties.co/v1/plus-cohort-9/cards `, {
+    return fetch(`${UserData.urlData}/cards `, {
       method: 'POST',
-      headers: {
-        authorization: '3e17db6a-6951-46bf-9280-ebc36e39e39a',
-        'Content-Type': 'application/json'
-    },
+      headers: UserData.headers,
       body: JSON.stringify({
         name: cardName,
         link: cardLink
@@ -110,12 +98,9 @@ const postCard = (cardName, cardLink) => {
   
   //Обновление аватара пользователя
   const editProfileAvatar = (avatarLink) => {
-    return fetch(`https://nomoreparties.co/v1/plus-cohort-9/users/me/avatar`, {
+    return fetch(`${UserData.urlData}/users/me/avatar`, {
       method: 'PATCH',
-      headers: {
-        authorization: '3e17db6a-6951-46bf-9280-ebc36e39e39a',
-        'Content-Type': 'application/json'
-    },
+      headers: UserData.headers,
 
       body: JSON.stringify({
         avatar: avatarLink

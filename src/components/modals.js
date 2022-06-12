@@ -28,8 +28,7 @@ const closeAvatarEditPopup = function () { // функция закрытия п
 // ф-я закрытия попап кликом редактирования профиля на фон
 const closePopupByClickOnOverlay = function (event) {
   if (event.target.classList.contains('popup')) {
-    const openedPopup = document.querySelector('.popup_is-opened');
-    closePopup(openedPopup);
+    closePopup(event.target);
   }
 }
 

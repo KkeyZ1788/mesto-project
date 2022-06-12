@@ -33,7 +33,7 @@ const formAddCardCloseButton = formAddCard.querySelector('.popup__close'); // к
 const profileAvatar = document.querySelector('.profile__avatar')
 const cardFormName = formAddCard.querySelector('.popup__form_type_add-name');
 const cardFormLink = formAddCard.querySelector('.popup__form_type_add-link');
-
+const addCardForm =document.querySelector('.add-card-form')
 let userId;
 const nameInput = profilePopup.querySelector('.popup__form_type_name');
 const jobInput = profilePopup.querySelector('.popup__form_type_job');
@@ -49,7 +49,7 @@ const avatarEditCloseButton = popupAvatarEdit.querySelector('.popup__close')
 //Обновляем данные пользователя на странице
 
 
-function udateUserData(data) {
+function updateUserData(data) { 
 
   profileName.textContent = data.name;
   profileDescription.textContent = data.about;
@@ -63,7 +63,7 @@ function udateUserData(data) {
 Promise.all([getUserData(), getInitialCards()])
   .then(([userData, cards]) => {
     const userId = userData._id;
-    udateUserData(userData);
+    updateUserData(userData); 
     cards.forEach((card) => {
       cardContainer.append(createCard(card, userId));
     });
@@ -81,15 +81,16 @@ const openProfilePopup = function () {
 // редактирование профиля
 const handleProfileFormSubmit = function (evt) {
   evt.preventDefault()
-
+  checkLoading(true, editProfileSubmtBtn);
 
   editProfile(nameInput.value, jobInput.value)
     .then(res => {
-      udateUserData(res);
+      updateUserData(res); 
       editProfileSubmtBtn.setAttribute('disabled', true);
       closeProfilePopup(profilePopup);
     })
     .catch(printError)
+    .finally(() => checkLoading(false, editProfileSubmtBtn));
 
 
   // profileName.textContent = nameInput.value
@@ -100,14 +101,18 @@ const handleProfileFormSubmit = function (evt) {
 // редактирование аватара 
 function handleProfileAvatarEdit() {
   const avatarLink = popupAvatarLink.value;
-
+  checkLoading(true, avatarEditButton);
   editProfileAvatar(avatarLink)
     .then(link => {
       profileAvatar.src = link.avatar; // готово
       avatarEditButton.disabled = true; // готово
-      closeAvatarEditPopup(popupAvatarEdit)// готово
+      closeAvatarEditPopup(popupAvatarEdit);// готово
+      avatarEditButton.setAttribute('disabled', true);
+      avatarEditForm.reset();
     })
+    
     .catch(printError)
+    .finally(() => checkLoading(false, avatarEditButton));
 }
 
 
@@ -122,10 +127,11 @@ const handleAddCardFromForm = function (evt) {
   postCard(cardName, cardLink)
     .then(card => cardContainer.prepend(createCard(card, userId)))
     .then(() => {
-
+      addCardForm.reset();
       cardSubmitBtn.classList.add('popup__button_disabled');
       cardSubmitBtn.setAttribute('disabled', true);
       closeAddForm();
+      
     })
     .catch(printError)
     .finally(() => checkLoading(false, addCardButton));
