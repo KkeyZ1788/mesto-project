@@ -48,6 +48,12 @@ function createCard(cardData, userId) {
   const imageElement = postElement.querySelector('.elements__img')
   const likeButton = postElement.querySelector('.elements__like-button')
   const elementLikeCount = postElement.querySelector('.element__like-counter');
+  const deleteButton = postElement.querySelector('.delete');
+  if (cardData.owner._id !== userId) {
+    deleteButton.remove();
+  }
+
+
 
   likeButton.addEventListener('click',
     (evt) => {handleGardLike(likeButton, elementLikeCount, cardData._id) });
@@ -61,7 +67,7 @@ function createCard(cardData, userId) {
   elementLikeCount.textContent = likes.length;
 
 
-  const deleteButton = postElement.querySelector('.delete')
+  
   deleteButton.addEventListener('click', function () {
     deleteCard(cardData._id)
       .then(() => {
@@ -76,9 +82,7 @@ function createCard(cardData, userId) {
     likeButton.classList.add('button_is-active');
   }
 
-  if (cardData.owner._id !== userId) {
-    deleteButton.remove();
-  }
+ 
 
 
   return postElement

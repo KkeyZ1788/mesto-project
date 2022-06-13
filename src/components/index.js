@@ -62,7 +62,8 @@ function updateUserData(data) {
 
 Promise.all([getUserData(), getInitialCards()])
   .then(([userData, cards]) => {
-    const userId = userData._id;
+    userId = userData._id;
+
     updateUserData(userData); 
     cards.forEach((card) => {
       cardContainer.append(createCard(card, userId));
@@ -107,7 +108,7 @@ function handleProfileAvatarEdit() {
       profileAvatar.src = link.avatar; // готово
       avatarEditButton.disabled = true; // готово
       closeAvatarEditPopup(popupAvatarEdit);// готово
-      avatarEditButton.setAttribute('disabled', true);
+      avatarEditButton.classList.add('popup__button_disabled');
       avatarEditForm.reset();
     })
     
@@ -123,10 +124,16 @@ const handleAddCardFromForm = function (evt) {
 
   const cardName = cardFormName.value;
   const cardLink = cardFormLink.value;
-
+  
+  
+  
   postCard(cardName, cardLink)
+  
+  
+  
     .then(card => cardContainer.prepend(createCard(card, userId)))
     .then(() => {
+      
       addCardForm.reset();
       cardSubmitBtn.classList.add('popup__button_disabled');
       cardSubmitBtn.setAttribute('disabled', true);

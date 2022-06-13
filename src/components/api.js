@@ -59,12 +59,13 @@ const editProfile = (name, description) => {
 
   //Добавление новой карточки
 const postCard = (cardName, cardLink) => {
-    return fetch(`${UserData.urlData}/cards `, {
+    return fetch(`${UserData.urlData}/cards`, {
       method: 'POST',
       headers: UserData.headers,
       body: JSON.stringify({
         name: cardName,
-        link: cardLink
+        link: cardLink,
+        
       })
     })
       .then(chekServerResponse)
