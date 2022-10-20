@@ -1,11 +1,8 @@
 import '../pages/index.css'
-import {validationSettings, buttonOpenPopupEdit, addNewCardButton,
-    openAvatarEditBtn, formAddCard, avatarEditForm,
-    profilePopup , nameInput, jobInput, editProfileSubmtBtn} from '../utils/constants.js';
-
-
-
-   import Api from '../components/Api.js';
+import {validationSettings, buttonOpenPopupEdit, buttonOpenPopupAdd,
+   buttonOpenPopupAvatar, formAdd, formAvatar,
+   formEdit, popupUsername, popupProfession} from '../utils/constants.js';
+import Api from '../components/Api.js';
 import Card from '../components/Card.js';
 import FormVaidator from '../components/FormValidator.js';
 import Section from '../components/Section.js';
@@ -14,7 +11,7 @@ import PopupWithForm from '../components/PopupWithForm.js';
 import PopupWithImage from '../components/PopupWithImage.js';
 
 
-// создание экземпляра класса Api
+//создаем экземпляр класса Api
 export const api = new Api({
   baseUrl: 'https://nomoreparties.co/v1/plus-cohort-9',
   headers: {
@@ -23,25 +20,10 @@ export const api = new Api({
   }
 });
 
-//создание экземпляра класса UserInfo
+//создаем экземпляр класса UserInfo
 const userInfo = new UserInfo({userNameSelector: '.profile__name',
-  userAboutSelector: '.profile__description',
-  userAvatarSelector: '.profile__avatar'});
-
-
-  // Получаем и записываем данные с сервера
-let userIdFromServer;
-Promise.all([api.getUserData(), api.getInitialCards()])
-  .then(([userData, cards]) => {
-    userInfo.setUserInfo(userData);
-    userInfo.setUserAvatar(userData);
-    userIdFromServer = userData._id; 
-    section.addItems(cards);
-  })
-  .catch((err) => {console.log(err)});
-
-
-
+  userAboutSelector: '.profile__proffession',
+  userAvatarSelector: '.profile__avatarImg'});
 
 // Функция создания карточек
 const createCard = (data) => {
@@ -74,7 +56,7 @@ const createCard = (data) => {
           .catch((err) => console.error(err))}
     }
 
-  }, "post-template" );
+  }, "element" );
   return card.generate();
 
 }
@@ -89,15 +71,26 @@ const section = new Section({
 
 
 
+// Получаем и записываем данные с сервера
+let userIdFromServer;
+Promise.all([api.getUserData(), api.getInitialCards()])
+  .then(([userData, cards]) => {
+    userInfo.setUserInfo(userData);
+    userInfo.setUserAvatar(userData);
+    userIdFromServer = userData._id; 
+    section.addItems(cards);
+  })
+  .catch((err) => {console.log(err)});
 
+console.log(userIdFromServer)
 
 //Попап аватара
 
 const popupAvatar = new PopupWithForm ({
-  popupSelector: '.popup__edit-avatar',
+  popupSelector: '.popup_type_avatar-edit',
   colbackSubmit: 
   (item) => {
-    checkLoading(true, avatarEditForm);
+    renderLoading(true, '.popup_type_avatar-edit');
     api.editAvatarProfile(item.avatar)
       .then((data) => {
         userInfo.setUserAvatar(data);
@@ -107,12 +100,12 @@ const popupAvatar = new PopupWithForm ({
         console.log(`${err}`);
       })
       .finally(()=> {
-        checkLoading(true, avatarEditForm);;
+        renderLoading(false, '.popup_type_avatar-edit');
       })
   }
 });
 
-openAvatarEditBtn.addEventListener('click', () => {
+buttonOpenPopupAvatar.addEventListener('click', () => {
   formVaidatorEditAvatar.hideErorrs();
   popupAvatar.open();
  });
@@ -122,9 +115,9 @@ popupAvatar.setEventListeners();
 // Попап редактирования профиля
 
 const editProfile = new PopupWithForm ({
-  popupSelector: '.popup_edit-profile',
+  popupSelector: '.popup_type_profile',
   colbackSubmit: (item) => {
-    checkLoading(true, editProfileSubmtBtn);
+    renderLoading(true, '.popup_type_profile');
     api.editProfile(item)
       .then((data)=> {
         userInfo.setUserInfo(data);
@@ -134,7 +127,7 @@ const editProfile = new PopupWithForm ({
         console.log(`${err}`);
       })
       .finally(()=> {
-        checkLoading(false, editProfileSubmtBtn);
+        renderLoading(false, '.popup_type_profile');
       })
 
   }
@@ -146,9 +139,9 @@ buttonOpenPopupEdit.addEventListener('click', () => {
   const {about, name} = userInfo.getUserInfo();
   
   formVaidatorEditProfile.hideErorrs();
-  nameInput.value = name;
+  popupUsername.value = name;
   
-  jobInput.value= about;
+  popupProfession.value= about;
   
   editProfile.open();
 
@@ -158,9 +151,9 @@ editProfile.setEventListeners();
 // Попап добавления карточки
 
 const addCardProfile = new PopupWithForm ({
-  popupSelector: '.popup_add-card',
+  popupSelector: '.popup_type_card-add',
   colbackSubmit: (item) => {
-    
+    renderLoading(true, '.popup_type_card-add');
     api.postCard(item)
       .then((data)=> {        
         const cardData = createCard(data);
@@ -170,11 +163,13 @@ const addCardProfile = new PopupWithForm ({
       .catch((err) => {
         console.log(`${err}`);
       })
-     
+      .finally(()=> {
+        renderLoading(false, '.popup_type_card-add');
+      })
   }
 })
 
-addNewCardButton.addEventListener('click', () => {
+buttonOpenPopupAdd.addEventListener('click', () => {
   formVaidatorAddCard.hideErorrs();
   addCardProfile.open();
 });
@@ -183,29 +178,26 @@ addCardProfile.setEventListeners();
 
 
 // Попап картинок
-const imagePopup = new PopupWithImage ('.popup_type_image')
+const imagePopup = new PopupWithImage ('.popup_type_picture')
 imagePopup.setEventListeners();
 
 
 //Валидация
 
-const formVaidatorAddCard = new FormVaidator(validationSettings, formAddCard);
+const formVaidatorAddCard = new FormVaidator(validationSettings, formAdd);
 formVaidatorAddCard.enableValidation();
-const formVaidatorEditProfile = new FormVaidator(validationSettings, profilePopup) ;
+const formVaidatorEditProfile = new FormVaidator(validationSettings, formEdit);
 formVaidatorEditProfile.enableValidation();
-const formVaidatorEditAvatar = new FormVaidator(validationSettings, avatarEditForm);
+const formVaidatorEditAvatar = new FormVaidator(validationSettings, formAvatar);
 formVaidatorEditAvatar.enableValidation();
 
 
 //Улучшенный UX всех форм
-export function checkLoading(isLoading, button) {
-    if (button.name === 'create-card-button') {
-      button.textContent = isLoading ? 'Сохранение...' : 'Создать'
-    } else {
-      button.textContent = isLoading ? 'Сохранение...' : 'Сохранить'
-    }
+export function renderLoading(isLoading, popup) {
+  const popupButton = document.querySelector(`${popup} .popup__button`)
+  if (popupButton.name === 'create-card-button') {
+    popupButton.textContent = isLoading ? 'Сохранение...' : 'Создать'
+  } else {
+    popupButton.textContent = isLoading ? 'Сохранение...' : 'Сохранить'
   }
-
-
-
-
+}

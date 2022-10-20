@@ -1,5 +1,3 @@
-
-
 import {api} from '../pages/index.js';
 
 export default class Card {
@@ -18,7 +16,7 @@ export default class Card {
     this._element = document
       .querySelector(`#${this._selector}`)
       .content
-      .querySelector('.elements__item')
+      .querySelector('.element')
       .cloneNode(true);
     
     return this._element;
@@ -27,9 +25,9 @@ export default class Card {
     this._cardData.likes = data.likes;
     this._elementLikeCount.textContent = this._cardData.likes.length;
     if (this.isLikedCard()){
-      this._elementButtonLike.classList.add("button_is-active")
+      this._elementButtonLike.classList.add("element__like_liked")
     } else {
-      this._elementButtonLike.classList.remove("button_is-active")
+      this._elementButtonLike.classList.remove("element__like_liked")
     }
   }
 
@@ -70,18 +68,18 @@ export default class Card {
   generate() {
     this._element = this._getElement();
 
-     
-    this._elementButtonDel = this._element.querySelector('.delete'); 
-    this._elementButtonLike = this._element.querySelector('.elements__like-button'); 
+    // this._elementImage = this._element.querySelector('.element__image');
+    this._elementButtonDel = this._element.querySelector('.element__delete');
+    this._elementButtonLike = this._element.querySelector('.element__like');
     this._elementLikeCount = this._element.querySelector('.element__like-counter');
 
 
     
-    this._elementImage = this._element.querySelector('.elements__img');
+    this._elementImage = this._element.querySelector('.element__image');
     this._elementImage.src = this._cardData.link;
     this._elementImage.alt = this._cardData.name;
     
-    this._element.querySelector('.elements__item-name').textContent = this._cardData.name;
+    this._element.querySelector('.element__name').textContent = this._cardData.name;
     this._elementLikeCount.textContent = this._cardData.likes.length;
     this._checkOwnerRemoveButtonDel();
     this.clickButtonLike(this._cardData);

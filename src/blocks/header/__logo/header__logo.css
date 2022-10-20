@@ -1,17 +1,11 @@
-.header__logo{
-    width: 103.74px;
-    height: 24.4px;
-    margin-left: 27px;
-    margin-bottom: 31.6px;
-    object-fit: cover;
-    object-position: center;
+.header__logo{    
+    padding: 0;
+    margin: 0 0 41px;    
 }
 
-@media screen and (min-width: 1280px){
+@media (max-width: 767px) {
     .header__logo{
-        width: 142px;
-        height: 33px;
-        margin-bottom: 41px;
-        margin-left: 0;
+        width: 103.74px;
+        margin: 0 auto 31.6px 27px;
     }
 }
