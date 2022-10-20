@@ -1,11 +1,12 @@
 {
-  "name": "mesto",
-  "version": "0.0.1",
-  "description": "Learning project",
-  "main": "index.js",
+  "name": "mesto-project",
+  "version": "1.0.0",
+  "description": "Проект Место",
+  "main": "index.j" ,
   "scripts": {
     "build": "webpack --mode production",
     "dev": "webpack serve",
+    "test": "echo \"Error: no test specified\" && exit 1",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist"
   },
@@ -13,29 +14,28 @@
     "type": "git",
     "url": "git+https://github.com/KkeyZ1788/mesto-project.git"
   },
+  "keywords": [],
   "author": "KatyaZ",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/KkeyZ1788/mesto-project/issues"
+    "url":  "https://github.com/KkeyZ1788/mesto-project/issues"
   },
   "homepage": "https://github.com/KkeyZ1788/mesto-project#readme",
   "devDependencies": {
-    "@babel/core": "^7.17.0",
-    "@babel/preset-env": "^7.16.11",
+    "@babel/preset-env": "^7.17.10",
     "autoprefixer": "^10.4.7",
-    "babel-loader": "^8.2.3",
+    "babel-loader": "^8.2.5",
     "clean-webpack-plugin": "^4.0.0",
-    "css-loader": "^6.6.0",
-    "cssnano": "^5.1.9",
+    "css-loader": "^6.7.1",
+    "cssnano": "^5.1.7",
+    "gh-pages": "^4.0.0",
     "html-webpack-plugin": "^5.5.0",
-    "mini-css-extract-plugin": "^2.5.3",
-    "postcss-loader": "^7.0.0",
-    "webpack": "^5.72.1",
+    "mini-css-extract-plugin": "^2.6.0",
+    "postcss-loader": "^6.2.1",
     "webpack-cli": "^4.9.2",
-    "webpack-dev-server": "^4.7.3"
+    "webpack-dev-server": "^4.9.1"
   },
   "dependencies": {
-    "core-js": "^3.22.7",
-    "gh-pages": "^4.0.0"
+    "core-js": "^3.22.8"
   }
 }
